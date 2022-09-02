@@ -9,20 +9,30 @@ class MyPromise {
   #thenFn = () => {};
   #catchFn = () => {};
   constructor(fn) {
+    // constructor accepts func as a parameter
     this.#status = statuses.pending;
-    return fn(this.resolve.bind(this), this.reject.bind(this));
+    return fn(this.resolve.bind(this), this.reject.bind(this)); // call function, which has a resolce callback and reject callback as parameter. (call method resolve/reject after async code)
   }
 
-  resolve(data) {
+  resolve(data) { 
     if (this.#status === statuses.pending) {
       this.#status = statuses.fulfilled;
-      return this.#thenFn(data);
+      setTimeout(() => {
+        try {
+          return this.#thenFn(data); // this is callback
+        } catch (err) {
+          this.#status = statuses.rejected;
+          this.#catchFn(err);
+        }
+      }, 0); // emulation micro tasks
     }
   }
   reject(error) {
     if (this.#status === statuses.pending) {
       this.#status = statuses.rejected;
-      return this.#catchFn(error);
+      setTimeout(() => {
+        return this.#catchFn(error); // this is callback
+      }, 0); // emulation micro tasks
     }
   }
 
@@ -41,6 +51,7 @@ class MyPromise {
 }
 
 const promiseTimeout = new MyPromise((resolve, reject) => {
+  // some asyn code which calls either : if success - resolve or reject while fail
   setTimeout(() => {
     resolve("Time is over");
     reject(new Error("err"));
@@ -48,7 +59,10 @@ const promiseTimeout = new MyPromise((resolve, reject) => {
 });
 
 promiseTimeout
-  .then((data) => console.log(data))
+  .then((data) => {
+    console.log(data);
+    throw new Error("err");
+  })
   .catch((err) => console.log(err));
 
 const a = new MyPromise((res, rej) => {
