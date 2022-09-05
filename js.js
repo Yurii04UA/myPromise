@@ -59,13 +59,15 @@ const promiseTimeout = new MyPromise((resolve, reject) => {
 });
 
 promiseTimeout
-  .then((data) => {
-    console.log(data);
-    throw new Error("err");
-  })
+  .then(data => data)
+  .then(data=> console.log(data))
   .catch((err) => console.log(err));
+  
 
-const a = new MyPromise((res, rej) => {
-  res("a");
-});
-console.log(a);
+
+
+// const a = new MyPromise((res, rej) => {
+//   res("a");
+// });
+// console.log(a);
+
