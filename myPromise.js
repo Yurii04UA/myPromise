@@ -1,5 +1,4 @@
 function MyPromise(executor) {
-  // получает функцию в качестве параметра
   // accept function
   let onResolved;
   let onRejected;
@@ -10,7 +9,7 @@ function MyPromise(executor) {
   let error;
 
   this.then = function (thenHandler) {
-    // в then мы передаем функцию которая должна будет выполниться в случае успеха после асинхронного кода  и она записывается в лок переменную onResolved
+    // in then we pass a function that should be executed if successful after the asynchronous code and it is written to a local variable onResolved
     onResolved = thenHandler;
     // console.log('my promise',onResolved);
     if (!isCalled && isFulfilled) {
@@ -20,7 +19,7 @@ function MyPromise(executor) {
     return this;
   };
   this.catch = function (catchHandler) {
-    // в catch мы передаем функцию которая должна будет выполниться в случае ошибки после асинхронного кода и она записывается в лок переменную onRejected
+    // in catch we pass a function that should be executed if rrror after the asynchronous code and it is written to a local variable onRejected
     onRejected = catchHandler;
     if (!isCalled && isRejected) {
       onRejected(error);
@@ -28,7 +27,7 @@ function MyPromise(executor) {
     return this;
   };
 
-  this.finally = function () {
+  this.finally = function (finallyHandler) {
     if (value) console.log("Finally Success :", value);
     if (error) console.log("Finally Reject :", error);
   };
@@ -37,7 +36,7 @@ function MyPromise(executor) {
     isFulfilled = true;
     value = data;
     if (typeof onResolved === "function" && !isCalled) {
-      // эта часть не отработает если будет запущен резолве без асинхр
+      // this code wont run if there wasn`t async func
       onResolved(data);
       isCalled = true;
     }
