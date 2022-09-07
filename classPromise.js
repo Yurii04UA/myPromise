@@ -14,7 +14,7 @@ class MyPromise {
     return fn(this.resolve.bind(this), this.reject.bind(this)); // call function, which has a resolce callback and reject callback as parameter. (call method resolve/reject after async code)
   }
 
-  resolve(data) { 
+  resolve(data) {
     if (this.#status === statuses.pending) {
       this.#status = statuses.fulfilled;
       setTimeout(() => {
@@ -59,15 +59,11 @@ const promiseTimeout = new MyPromise((resolve, reject) => {
 });
 
 promiseTimeout
-  .then(data => data)
-  .then(data=> console.log(data))
+  .then((data) => data)
+  .then((data) => console.log(data))
   .catch((err) => console.log(err));
-  
-
-
 
 // const a = new MyPromise((res, rej) => {
 //   res("a");
 // });
 // console.log(a);
-
