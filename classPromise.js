@@ -36,25 +36,27 @@ class MyPromise {
     }
   }
 
-  then(onResolved, onRejected) {
+  then(onResolved) {
     if (onResolved) {
       this.#thenFn = onResolved;
     }
+   
     return this;
   }
   catch(onRejected) {
     if (onRejected) {
       this.#catchFn = onRejected;
+      
     }
-    return this.then(null, onRejected);
+    return this.then(onRejected);
   }
 }
 
 const promiseTimeout = new MyPromise((resolve, reject) => {
   // some asyn code which calls either : if success - resolve or reject while fail
   setTimeout(() => {
-    resolve("Time is over");
-    reject(new Error("err"));
+    // resolve("Time is over");
+    reject(new Error("errors"));
   }, 1000);
 });
 
